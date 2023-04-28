@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
-import {Autocomplete, Button } from '@mantine/core';
+import {Autocomplete, Button, Grid} from '@mantine/core';
 import Fetcher from "./Fetcher";
 import deckSlice from './deckSlice'
 import { AxiosResponse } from 'axios';
@@ -45,17 +45,20 @@ export const Search = () => {
 
     if (names.length > 0) {
         return (
-                <div>
+                <Grid grow gutter={3}>
+                    <Grid.Col span={8}>
+
                     <Autocomplete
-                        label="Find your pokemon by name"
                         placeholder={`Pick one of the ${count} pokemon available`}
                         onChange={change}
                         data={names}
                     />
-                    <div>
-                        <Button onClick={addCard} disabled={!found}>Add Card</Button>
-                    </div>
-                </div>
+                    </Grid.Col>
+
+                    <Grid.Col span={4} bottom>
+                        <Button style={{height: '100%'}} onClick={addCard} disabled={!found}>Add Card</Button>
+                    </Grid.Col>
+                </Grid>
         );
     }
     return <div>Loading pokemon list</div>

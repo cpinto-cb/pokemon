@@ -7,8 +7,10 @@ import { store } from './store'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-      <Provider store={store}>
-          <App />
-      </Provider>
+      {/*<MantineProvider theme={{ fontFamily: 'Open Sans', fontSize: '3em' }} withGlobalStyles withNormalizeCSS>*/}
+          <Provider store={store}>
+              <App />
+          </Provider>
+      {/*</MantineProvider>*/}
   </React.StrictMode>,
 )
