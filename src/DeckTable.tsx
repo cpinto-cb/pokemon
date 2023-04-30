@@ -14,13 +14,19 @@ export const DeckTable = () => {
     const dispatch = useDispatch()
 
 
-    const deleteCard = (e) => {
+    const deleteCard = (e: any) => {
         const id = e.currentTarget.getAttribute('data-id');
         const newDeck = cards.filter((card) => id !== card.uuid);
         const [deletedCard] = cards.filter((card) => id === card.uuid);
-        debugger;
         dispatch(setDeck(newDeck));
-        dispatch(addHistory({ event: 'Deleted card', uuid: uuidv4(), url: deletedCard.url, name: deletedCard.name, image: deletedCard.image }));
+        dispatch(addHistory({
+            uuid: uuidv4(),
+            event: 'Deleted card',
+            name: deletedCard.name,
+            url: deletedCard.url,
+            image: deletedCard.image,
+            date: new Date().toLocaleString()
+        }));
 
     }
     const rows = cards.map((card) => (

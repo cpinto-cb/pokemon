@@ -2,10 +2,11 @@ import pokemonLogo from '/PokemonLogo.svg';
 
 import './App.css'
 import { Search } from "./Search";
-import { Deck } from "./Deck";
+// import { Deck } from "./Deck";
 import { Grid } from "@mantine/core";
 import { DeckTable } from "./DeckTable";
 import { HistoryTable } from "./HistoryTable";
+import PokemonInfo from "./PokemonInfo";
 
 function App() {
 
@@ -17,11 +18,11 @@ function App() {
         <Grid grow>
           <Grid.Col span={4}>
               <Search />
-              <Deck />
+              {/*<Deck />*/}
               <DeckTable />
           </Grid.Col>
             <Grid.Col span={4}>
-                Pokemon Info
+                <PokemonInfo />
             </Grid.Col>
         <Grid.Col span={4}>
             <HistoryTable />

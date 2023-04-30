@@ -2,17 +2,17 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import { History } from "./History";
 
-export const deckSlice = createSlice({
+export const historySlice = createSlice({
     name: 'history',
     initialState: {
         history: [] as History[],
     },
     reducers: {
         addHistory: (state, action: PayloadAction<History> ) => {
-            const newPayload = {date: new Date().toLocaleString(), ...action.payload }
+            const newPayload = action.payload;
             state.history = [newPayload, ...state.history];
         }
     }
 })
 
-export default deckSlice
+export default historySlice

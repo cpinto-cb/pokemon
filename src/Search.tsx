@@ -5,20 +5,16 @@ import Fetcher from "./Fetcher";
 import deckSlice from './deckSlice'
 import { AxiosResponse } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { useForm } from '@mantine/form';
 import {PokemonCard} from "./Card";
 import historySlice from "./historySlice";
+import pokemonInfoSlice from "./pokemonInfoSlice";
 
 const { addToDeck } = deckSlice.actions
 const { addHistory } = historySlice.actions
+const { setPokemonInfoUrl } = pokemonInfoSlice.actions
 
-export const Search = (bytes: BufferSource) => {
+export const Search = () => {
     const dispatch = useDispatch();
-    const form = useForm({
-        initialValues: {
-            pokemomName: ''
-        }
-    });
     const [names, setNames]  = useState([]);
     const [cards, setCards] = useState<{name: string, url: string}[]>([]);
     const [count, setCount] = useState(0);
@@ -26,27 +22,28 @@ export const Search = (bytes: BufferSource) => {
     const [found, setFound] = useState(false);
     // const [currentCard, setCurrentCard] = useState<{name: string | undefined, url: string | undefined}>({url: '', name: ''});
 
-    const addCard = (event) => {
+    const addCard = () => {
         const find = cards.find((card) => card.name === value) || { name: '', url: '' };
         const saveCardToDeck = (response: AxiosResponse) => {
             const { url } = find;
             const { data : { name, sprites: { front_default: image } }} = response;
             dispatch(addToDeck({ uuid: uuidv4(), url, name, image}));
             setValue('');
-            dispatch(addHistory({ event: 'Added Card', uuid: uuidv4(), url, name, image }));
+            dispatch(addHistory({ event: 'Added Card', uuid: uuidv4(), url, name, image, date: new Date().toLocaleString()  }));
         }
         if (find.name !== undefined) {
             Fetcher(find.url, {}, saveCardToDeck, null);
         }
-        event.preventDefault();
     }
     const change = (inputValue:string ) => {
         setValue(inputValue);
         const find = cards.find((card) => card.name === inputValue) as PokemonCard | undefined;
         setFound(find !== undefined);
 
-        if (find !== undefined){
-            dispatch(addHistory({ event: 'Found card', uuid: uuidv4(), url: find.url, name: find.name, image: ''}));
+        if (find !== undefined) {
+            dispatch(addHistory({ event: 'Found card', uuid: uuidv4(), url: find.url, name: find.name, image: '', date: new Date().toLocaleString() }));
+            dispatch(setPokemonInfoUrl(find.url as string));
+
         }
     }
     const saveCards = (response: any) => {

@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { deckSlice } from "./deckSlice";
 import historySlice from "./historySlice";
+import pokemonInfoSlice from "./pokemonInfoSlice";
 export const store = configureStore({
     reducer: {
         pokemonDeck: deckSlice.reducer,
-        historyTable: historySlice.reducer
+        historyTable: historySlice.reducer,
+        pokemonInfo: pokemonInfoSlice.reducer
     }
 })
 
