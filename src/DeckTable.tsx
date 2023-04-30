@@ -1,10 +1,13 @@
 import {Button, Table} from "@mantine/core";
 import { useAppSelector} from "./hooks";
-import {RootState} from "./store";
+import { RootState } from "./store";
 import deckSlice from "./deckSlice";
 import {useDispatch} from "react-redux";
+import {v4 as uuidv4} from "uuid";
+import historySlice from "./historySlice";
 
 const { setDeck } = deckSlice.actions
+const { addHistory } = historySlice.actions
 
 export const DeckTable = () => {
     const { pokemonDeck: { cards  } } = useAppSelector<RootState>((state) => state);
@@ -14,7 +17,11 @@ export const DeckTable = () => {
     const deleteCard = (e) => {
         const id = e.currentTarget.getAttribute('data-id');
         const newDeck = cards.filter((card) => id !== card.uuid);
+        const [deletedCard] = cards.filter((card) => id === card.uuid);
+        debugger;
         dispatch(setDeck(newDeck));
+        dispatch(addHistory({ event: 'Deleted card', uuid: uuidv4(), url: deletedCard.url, name: deletedCard.name, image: deletedCard.image }));
+
     }
     const rows = cards.map((card) => (
         <tr key={card.uuid}>
