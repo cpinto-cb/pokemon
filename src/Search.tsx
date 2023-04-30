@@ -4,6 +4,7 @@ import {Autocomplete, Button, Grid} from '@mantine/core';
 import Fetcher from "./Fetcher";
 import deckSlice from './deckSlice'
 import { AxiosResponse } from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const { addToDeck } = deckSlice.actions
 
@@ -21,7 +22,7 @@ export const Search = () => {
         const saveCardToDeck = (response: AxiosResponse) => {
             const { url } = find;
             const { data : { name, sprites: { front_default: image } }} = response;
-            dispatch(addToDeck({url, name, image}));
+            dispatch(addToDeck({ uuid: uuidv4(), url, name, image}));
         }
         if (find !== undefined) {
             Fetcher(find.url, {}, saveCardToDeck, null);
@@ -55,7 +56,7 @@ export const Search = () => {
                     />
                     </Grid.Col>
 
-                    <Grid.Col span={4} bottom>
+                    <Grid.Col span={4}>
                         <Button style={{height: '100%'}} onClick={addCard} disabled={!found}>Add Card</Button>
                     </Grid.Col>
                 </Grid>
