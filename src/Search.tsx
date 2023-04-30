@@ -5,11 +5,17 @@ import Fetcher from "./Fetcher";
 import deckSlice from './deckSlice'
 import { AxiosResponse } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import { useForm } from '@mantine/form';
 
 const { addToDeck } = deckSlice.actions
 
-export const Search = () => {
-    const dispatch = useDispatch()
+export const Search = (bytes: BufferSource) => {
+    const dispatch = useDispatch();
+    const form = useForm({
+        initialValues: {
+            pokemomName: ''
+        }
+    });
     const [names, setNames]  = useState([]);
     const [cards, setCards] = useState<{name: string, url: string}[]>([]);
     const [count, setCount] = useState(0);
@@ -17,16 +23,20 @@ export const Search = () => {
     const [found, setFound] = useState(false);
     // const [currentCard, setCurrentCard] = useState<{name: string | undefined, url: string | undefined}>({url: '', name: ''});
 
-    const addCard = () => {
+    const addCard = (event) => {
         const find = cards.find((card) => card.name === value) || { name: '', url: '' };
         const saveCardToDeck = (response: AxiosResponse) => {
             const { url } = find;
             const { data : { name, sprites: { front_default: image } }} = response;
             dispatch(addToDeck({ uuid: uuidv4(), url, name, image}));
+            setValue('');
+            event.preventDefault();
+            return false;
         }
-        if (find !== undefined) {
+        if (find.name !== undefined) {
             Fetcher(find.url, {}, saveCardToDeck, null);
         }
+        event.preventDefault();
     }
     const change = (inputValue:string ) => {
         setValue(inputValue);
@@ -46,13 +56,15 @@ export const Search = () => {
 
     if (names.length > 0) {
         return (
+            <form onSubmit={addCard}>
                 <Grid grow gutter={3}>
                     <Grid.Col span={8}>
 
                     <Autocomplete
-                        placeholder={`Pick one of the ${count} pokemon available`}
-                        onChange={change}
+                        placeholder={`Type to find one of the ${count} available Pokemon`}
                         data={names}
+                        value={value}
+                        onChange={change}
                     />
                     </Grid.Col>
 
@@ -60,6 +72,7 @@ export const Search = () => {
                         <Button style={{height: '100%'}} onClick={addCard} disabled={!found}>Add Card</Button>
                     </Grid.Col>
                 </Grid>
+            </form>
         );
     }
     return <div>Loading pokemon list</div>

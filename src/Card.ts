@@ -1,4 +1,4 @@
-export type PokemunCard = {
+export type PokemonCard = {
     uuid: string | undefined;
     name: string | undefined;
     url: string | undefined;

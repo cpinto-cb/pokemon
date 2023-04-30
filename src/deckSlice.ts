@@ -1,17 +1,17 @@
 
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import { PokemunCard } from "./Card";
+import { PokemonCard } from "./Card";
 
 export const deckSlice = createSlice({
     name: 'deck',
     initialState: {
-        cards: [] as PokemunCard[],
+        cards: [] as PokemonCard[],
     },
     reducers: {
-        addToDeck: (state, action: PayloadAction<PokemunCard> ) => {
+        addToDeck: (state, action: PayloadAction<PokemonCard> ) => {
             state.cards = [action.payload, ...state.cards];
         },
-        setDeck: (state, action: PayloadAction<PokemunCard[]> ) => {
+        setDeck: (state, action: PayloadAction<PokemonCard[]> ) => {
             state.cards = action.payload;
         },
         clearDeck: (state) => {
