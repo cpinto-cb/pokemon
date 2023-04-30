@@ -6,8 +6,11 @@ import deckSlice from './deckSlice'
 import { AxiosResponse } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { useForm } from '@mantine/form';
+import {PokemonCard} from "./Card";
+import historySlice from "./historySlice";
 
 const { addToDeck } = deckSlice.actions
+const { addHistory } = historySlice.actions
 
 export const Search = (bytes: BufferSource) => {
     const dispatch = useDispatch();
@@ -30,8 +33,7 @@ export const Search = (bytes: BufferSource) => {
             const { data : { name, sprites: { front_default: image } }} = response;
             dispatch(addToDeck({ uuid: uuidv4(), url, name, image}));
             setValue('');
-            event.preventDefault();
-            return false;
+            dispatch(addHistory({ event: 'Added Card', uuid: uuidv4(), url, name, image }));
         }
         if (find.name !== undefined) {
             Fetcher(find.url, {}, saveCardToDeck, null);
@@ -40,8 +42,12 @@ export const Search = (bytes: BufferSource) => {
     }
     const change = (inputValue:string ) => {
         setValue(inputValue);
-        const find = cards.find((card) => card.name === inputValue);
+        const find = cards.find((card) => card.name === inputValue) as PokemonCard | undefined;
         setFound(find !== undefined);
+
+        if (find !== undefined){
+            dispatch(addHistory({ event: 'Found card', uuid: uuidv4(), url: find.url, name: find.name, image: ''}));
+        }
     }
     const saveCards = (response: any) => {
         const { data: { results } } = response;
