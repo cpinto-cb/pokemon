@@ -12,8 +12,6 @@ export const HistoryTable = () => {
 
 
     const clickedRow = (e: any) => {
-        debugger;
-        // @ts-ignore
         const url = e.currentTarget.getAttribute('data-url');
         dispatch(setPokemonInfoUrl(url))
 
