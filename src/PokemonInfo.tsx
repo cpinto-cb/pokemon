@@ -51,35 +51,38 @@ export const PokemonInfo = () => {
     }, [pokemonInfoUrl]);
     if (pokemonInfoUrl) {
         return (
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Card.Section>
-                    <Badge>{name}</Badge>
-                    {imageUrl ? <Card.Section><img alt={`${name}`} height={100} src={imageUrl} /></Card.Section>: null}
-                    <Text>Height: {height} Weight: {weight}</Text>
-                    <Text>Species: {species}</Text>
-                </Card.Section>
-            <Card.Section>
-                <Group position="apart" mt="md" mb="xs">
-                    <Text>Abilities: {abilities.join(', ')}</Text>
-                </Group>
-            </Card.Section>
-            <Card.Section>
-                <Group position="apart" mt="md" mb="xs">
-                    <Text>Moves: {moves.join(', ')}</Text>
-                </Group>
-            </Card.Section>
-            <Card.Section>
-                {sprites.map((s) => (
-                    <Tooltip
-                        label={`Sprite Name: ${s.spriteName}`}
-                        withArrow
-                    >
-                        <img alt={`${s.spriteName}`} height={100} src={s.spriteUrl} />
-                    </Tooltip>
-                ))}
-            </Card.Section>
+            <div style={{ border: 8, margin: 5 }}>
+                <Card key="info" shadow="sm" padding="lg" radius="md">
+                        <Card.Section>
+                            <Badge>{name}</Badge>
+                            {imageUrl ? <Card.Section><img alt={`${name}`} height={100} src={imageUrl} /></Card.Section>: null}
+                            <Text>Height: {height} Weight: {weight}</Text>
+                            <Text>Species: {species}</Text>
+                        </Card.Section>
+                    <Card.Section key="abilities">
+                        <Group position="apart">
+                            <Text>Abilities: {abilities.join(', ')}</Text>
+                        </Group>
+                    </Card.Section>
+                    <Card.Section key="moves">
+                        <Group position="apart" mt="md" mb="xs">
+                            <Text>Moves: {moves.join(', ')}</Text>
+                        </Group>
+                    </Card.Section>
+                    <Card.Section key="sprites">
+                        {sprites.map((s) => (
+                            <Tooltip
+                                label={`Sprite Name: ${s.spriteName}`}
+                                withArrow
+                                key={s.spriteName}
+                            >
+                                <img alt={`${s.spriteName}`} height={100} src={s.spriteUrl} />
+                            </Tooltip>
+                        ))}
+                    </Card.Section>
 
-        </Card>
+                </Card>
+            </div>
         );
     }
     return null;
